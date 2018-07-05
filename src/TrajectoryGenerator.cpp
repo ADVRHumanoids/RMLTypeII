@@ -1,6 +1,6 @@
 #include <Wrappers/TrajectoryGenerator.h>
 
-mpl::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double period, const Eigen::VectorXd& x_0):
+Reflexxes::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double period, const Eigen::VectorXd& x_0):
     N_DOF(n_dof),
     CYCLE_TIME(period),
     _interpolator(n_dof, period),
@@ -51,7 +51,7 @@ mpl::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double period, c
     
 }
 
-void mpl::Utils::TrajectoryGenerator::setReference(Eigen::Ref<const Eigen::VectorXd> pos, Eigen::Ref<const Eigen::VectorXd> vel)
+void Reflexxes::Utils::TrajectoryGenerator::setReference(Eigen::Ref<const Eigen::VectorXd> pos, Eigen::Ref<const Eigen::VectorXd> vel)
 {
     Eigen::Map<Eigen::VectorXd> target_pos(_input.TargetPositionVector->VecData, 
                                            _input.TargetPositionVector->GetVecDim());
@@ -71,7 +71,7 @@ void mpl::Utils::TrajectoryGenerator::setReference(Eigen::Ref<const Eigen::Vecto
     }
 }
 
-bool mpl::Utils::TrajectoryGenerator::update(Eigen::Ref< Eigen::VectorXd > pos, Eigen::Ref< Eigen::VectorXd > vel)
+bool Reflexxes::Utils::TrajectoryGenerator::update(Eigen::Ref< Eigen::VectorXd > pos, Eigen::Ref< Eigen::VectorXd > vel)
 {
     auto result =   _interpolator.RMLPosition(_input,
                                               &_output,
@@ -100,7 +100,7 @@ bool mpl::Utils::TrajectoryGenerator::update(Eigen::Ref< Eigen::VectorXd > pos, 
 }
 
 
-void mpl::Utils::TrajectoryGenerator::setAccelerationLimits(const double qddot_max)
+void Reflexxes::Utils::TrajectoryGenerator::setAccelerationLimits(const double qddot_max)
 {
     Eigen::Map<Eigen::VectorXd> max_acc(_input.MaxAccelerationVector->VecData, 
                                         _input.MaxAccelerationVector->GetVecDim());
@@ -113,7 +113,7 @@ void mpl::Utils::TrajectoryGenerator::setAccelerationLimits(const double qddot_m
     max_acc.setConstant(qddot_max);
 }
 
-void mpl::Utils::TrajectoryGenerator::setVelocityLimits(const double qdot_max)
+void Reflexxes::Utils::TrajectoryGenerator::setVelocityLimits(const double qdot_max)
 {
     Eigen::Map<Eigen::VectorXd> max_vel(_input.MaxVelocityVector->VecData, 
                                         _input.MaxVelocityVector->GetVecDim());
