@@ -1,0 +1,10 @@
+set(ReflexxesTypeII_VERSION @ReflexxesTypeII_VERSION@)
+@PACKAGE_INIT@
+set(ReflexxesTypeII_INCLUDEDIR "@PACKAGE_ReflexxesTypeII_INCLUDEDIR@")
+if(NOT TARGET ReflexxesTypeII::ReflexxesTypeII)
+  include("${CMAKE_CURRENT_LIST_DIR}/ReflexxesTypeIITargets.cmake")
+endif()
+# Compatibility
+set(ReflexxesTypeII_LIBRARIES ReflexxesTypeII::ReflexxesTypeII)
+set(ReflexxesTypeII_INCLUDE_DIRS "${ReflexxesTypeII_INCLUDEDIR}/ReflexxesTypeII")
+

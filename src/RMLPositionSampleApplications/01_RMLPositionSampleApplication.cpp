@@ -101,7 +101,7 @@ int main()
     printf("Reflexxes API (class ReflexxesAPI) using the position- \n"  );
     printf("based Type II Online Trajectory Generation algorithm.  \n\n");
     printf("Copyright (C) 2015 Google, Inc.                      \n"  );
-    printf("-------------------------------------------------------\n"  );
+    printf("-------------------------------------------Flags------------\n"  );
 
     // ********************************************************************
     // Set-up the input parameters
