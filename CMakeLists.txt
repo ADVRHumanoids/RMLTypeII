@@ -10,6 +10,10 @@ file(GLOB ReflexxesTypeII_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "src/TypeIIRML/*.cpp"
 )
 
+set(ReflexxesTypeII_SRC ${ReflexxesTypeII_SRC} src/TrajectoryGenerator.cpp)
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 add_library(ReflexxesTypeII SHARED ${ReflexxesTypeII_SRC})
 # target_include_directories(ReflexxesTypeII PUBLIC include/ReflexxesTypeII)
 
