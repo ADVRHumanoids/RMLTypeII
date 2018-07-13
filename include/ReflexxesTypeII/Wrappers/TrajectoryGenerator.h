@@ -26,6 +26,8 @@ namespace Reflexxes
         bool update(Eigen::Ref<Eigen::VectorXd> pos, 
                     Eigen::Ref<Eigen::VectorXd> vel);
         
+        void reset(Eigen::Ref<const Eigen::VectorXd> pos);
+        
         void setVelocityLimits(Eigen::Ref<const Eigen::VectorXd> qdot_max);
         void setAccelerationLimits(Eigen::Ref<const Eigen::VectorXd> qddot_max);
         
@@ -46,6 +48,7 @@ namespace Reflexxes
     
     }
 }
+
 
 
 

@@ -42,9 +42,9 @@ Reflexxes::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double per
     Eigen::Map<Eigen::VectorXd> max_jerk(_input.MaxJerkVector->VecData, 
                                          _input.MaxJerkVector->GetVecDim());
     
-    max_vel.setConstant(1.0);
-    max_acc.setConstant(10.0);
-    max_jerk.setConstant(100.0);
+    max_vel.setConstant(0.1);
+    max_acc.setConstant(1.0);
+    max_jerk.setConstant(10.0);
     
     _input.SelectionVector->Set(true);
     
@@ -124,4 +124,62 @@ void Reflexxes::Utils::TrajectoryGenerator::setVelocityLimits(const double qdot_
     }
     
     max_vel.setConstant(qdot_max);
+}
+
+void Reflexxes::Utils::TrajectoryGenerator::reset(Eigen::Ref<const Eigen::VectorXd> pos)
+{
+    Eigen::Map<Eigen::VectorXd> cur_pos(_input.CurrentPositionVector->VecData, 
+                                        _input.CurrentPositionVector->GetVecDim());
+    
+    Eigen::Map<Eigen::VectorXd> cur_vel(_input.CurrentVelocityVector->VecData, 
+                                        _input.CurrentVelocityVector->GetVecDim());
+    
+    Eigen::Map<Eigen::VectorXd> cur_acc(_input.CurrentAccelerationVector->VecData, 
+                                        _input.CurrentAccelerationVector->GetVecDim());
+    
+    if(pos.size() != cur_pos.size())
+    {
+        throw std::invalid_argument("TrajectoryGenerator::reset: pos.size() != cur_pos.size()");
+    }
+    
+    cur_pos = pos;
+    cur_vel.setZero();
+    cur_acc.setZero();
+}
+
+void Reflexxes::Utils::TrajectoryGenerator::setAccelerationLimits(Eigen::Ref<const Eigen::VectorXd> qddot_max)
+{
+    Eigen::Map<Eigen::VectorXd> max_acc(_input.MaxAccelerationVector->VecData, 
+                                        _input.MaxAccelerationVector->GetVecDim());
+    
+    if(qddot_max.size() != max_acc.size())
+    {
+        throw std::invalid_argument("TrajectoryGenerator::setAccelerationLimits: qddot_max.size() != max_acc.size()");
+    }
+    
+    if( (qddot_max.array() <= 0).any() )
+    {
+        throw std::invalid_argument("TrajectoryGenerator::setAccelerationLimits: some acc limits are <= 0");
+    }
+    
+    max_acc = qddot_max;
+}
+
+
+void Reflexxes::Utils::TrajectoryGenerator::setVelocityLimits(Eigen::Ref<const Eigen::VectorXd> qdot_max)
+{
+    Eigen::Map<Eigen::VectorXd> max_vel(_input.MaxVelocityVector->VecData, 
+                                        _input.MaxVelocityVector->GetVecDim());
+    
+    if(qdot_max.size() != max_vel.size())
+    {
+        throw std::invalid_argument("TrajectoryGenerator::setVelocityLimits: qdot_max.size() != max_vel.size()");
+    }
+    
+    if( (qdot_max.array() <= 0).any() )
+    {
+        throw std::invalid_argument("TrajectoryGenerator::setVelocityLimits: some vel limits are <= 0");
+    }
+    
+    max_vel = qdot_max;
 }
