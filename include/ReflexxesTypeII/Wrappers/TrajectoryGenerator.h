@@ -20,8 +20,9 @@ namespace Reflexxes
         
         TrajectoryGenerator(int n_dof, double period, const Eigen::VectorXd& x_0);
         
-        void setReference(Eigen::Ref<const Eigen::VectorXd> pos, 
-                          Eigen::Ref<const Eigen::VectorXd> vel = Eigen::VectorXd());
+        template <typename DerivedPos, typename DerivedVel>
+        void setReference(const Eigen::MatrixBase<DerivedPos>& pos, 
+                          const Eigen::MatrixBase<DerivedVel>& vel);
         
         bool update(Eigen::Ref<Eigen::VectorXd> pos, 
                     Eigen::Ref<Eigen::VectorXd> vel);
@@ -49,6 +50,27 @@ namespace Reflexxes
     }
 }
 
+template <typename DerivedPos, typename DerivedVel>
+void Reflexxes::Utils::TrajectoryGenerator::setReference(const Eigen::MatrixBase< DerivedPos >& pos, 
+                                                         const Eigen::MatrixBase< DerivedVel >& vel)
+{
+    Eigen::Map<Eigen::VectorXd> target_pos(_input.TargetPositionVector->VecData, 
+                                           _input.TargetPositionVector->GetVecDim());
+    
+    Eigen::Map<Eigen::VectorXd> target_vel(_input.TargetVelocityVector->VecData, 
+                                           _input.TargetVelocityVector->GetVecDim());
+    
+    target_pos = pos;
+    
+    if(vel.size() > 0)
+    {
+        target_vel = vel;
+    }
+    else
+    {
+        target_vel.setZero();
+    }
+}
 
 
 

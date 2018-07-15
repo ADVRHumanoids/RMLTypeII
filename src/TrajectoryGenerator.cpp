@@ -51,26 +51,6 @@ Reflexxes::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double per
     
 }
 
-void Reflexxes::Utils::TrajectoryGenerator::setReference(Eigen::Ref<const Eigen::VectorXd> pos, Eigen::Ref<const Eigen::VectorXd> vel)
-{
-    Eigen::Map<Eigen::VectorXd> target_pos(_input.TargetPositionVector->VecData, 
-                                           _input.TargetPositionVector->GetVecDim());
-    
-    Eigen::Map<Eigen::VectorXd> target_vel(_input.TargetVelocityVector->VecData, 
-                                           _input.TargetVelocityVector->GetVecDim());
-    
-    target_pos = pos;
-    
-    if(vel.size() > 0)
-    {
-        target_vel = vel;
-    }
-    else
-    {
-        target_vel.setZero();
-    }
-}
-
 bool Reflexxes::Utils::TrajectoryGenerator::update(Eigen::Ref< Eigen::VectorXd > pos, Eigen::Ref< Eigen::VectorXd > vel)
 {
     auto result =   _interpolator.RMLPosition(_input,
