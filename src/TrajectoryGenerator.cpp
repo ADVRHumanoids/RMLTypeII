@@ -1,4 +1,6 @@
 #include <Wrappers/TrajectoryGenerator.h>
+#include <iostream>
+
 
 Reflexxes::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double period, const Eigen::VectorXd& x_0):
     N_DOF(n_dof),
@@ -51,15 +53,17 @@ Reflexxes::Utils::TrajectoryGenerator::TrajectoryGenerator(int n_dof, double per
     
 }
 
-bool Reflexxes::Utils::TrajectoryGenerator::update(Eigen::Ref< Eigen::VectorXd > pos, Eigen::Ref< Eigen::VectorXd > vel)
+bool Reflexxes::Utils::TrajectoryGenerator::update(Eigen::Ref< Eigen::VectorXd > pos, 
+                                                   Eigen::Ref< Eigen::VectorXd > vel)
 {
     auto result =   _interpolator.RMLPosition(_input,
                                               &_output,
                                               _flags);
+    
 
     if (result < 0)
     {
-        printf("An error occurred (%d).\n", result );
+        printf("TrajectoryGenerator::update: An error occurred (%d).\n", result );
         return false;
     }
 
@@ -125,6 +129,8 @@ void Reflexxes::Utils::TrajectoryGenerator::reset(Eigen::Ref<const Eigen::Vector
     cur_pos = pos;
     cur_vel.setZero();
     cur_acc.setZero();
+    
+    setReference(cur_pos, cur_vel);
 }
 
 void Reflexxes::Utils::TrajectoryGenerator::setAccelerationLimits(Eigen::Ref<const Eigen::VectorXd> qddot_max)
@@ -162,4 +168,5 @@ void Reflexxes::Utils::TrajectoryGenerator::setVelocityLimits(Eigen::Ref<const E
     }
     
     max_vel = qdot_max;
+    
 }
